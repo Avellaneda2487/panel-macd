@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cruces MACD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,600;0,700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --fondo:#EFEFEF;
+  --sobre:#1B1B1B;
+  --sobre-suave:#6E6E6E;
+  --sobre-regla:#CBCBCB;
+  --losa:#FFFFFF;
+  --tinta:#1B1B1B;
+  --tinta-suave:#707070;
+  --regla:#E3E3E3;
+  --regla-fuerte:#C4C4C4;
+  --azul:#1A3E8C;
+  --verde:#009900;
+  --rojo:#CC0000;
+  --verde-fondo:#E3F3E3;
+  --rojo-fondo:#FAE2E2;
+  --verde-claro:#009900;
+  --rojo-claro:#CC0000;
+  --verde-sombra:rgba(0,153,0,.20);
+  --rojo-sombra:rgba(204,0,0,.20);
+}
+:root{ color-scheme:light }
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--fondo);color:var(--sobre);
+  font-family:Bitter,Georgia,serif;font-size:15px;line-height:1.5;
+}
+.hoja{max-width:800px;margin:0 auto;padding:24px 18px 64px}
+
+.marca{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px;
+  padding-bottom:9px;border-bottom:1px solid var(--sobre-regla);
+}
+.marca h1{font-size:16px;font-weight:600;margin:0;letter-spacing:.01em}
+.rueda{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--sobre-suave);margin-left:auto}
+
+.titulo{
+  margin:26px 0 2px;font-size:clamp(19px,3.6vw,24px);font-weight:400;line-height:1.25;
+}
+.titulo.salida{color:var(--rojo-claro)}
+.titulo.entrada{color:var(--verde-claro)}
+.bajada{margin:0 0 14px;font-size:13px;color:var(--sobre-suave);max-width:54ch}
+.vacio{
+  margin:0 0 20px;padding:13px 15px;border:1px dashed var(--sobre-regla);
+  font-size:13.5px;color:var(--sobre-suave);
+}
+
+/* ---------- losa ---------- */
+.papel{
+  background:var(--losa);color:var(--tinta);
+  padding:13px 15px 15px;margin-bottom:11px;
+  border-left:3px solid var(--verde);
+  border:1px solid var(--regla);border-left:3px solid var(--verde);box-shadow:0 1px 2px rgba(0,0,0,.08);
+}
+.papel.baja{border-left-color:var(--rojo);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+
+.fila-1{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.tick{font-size:21px;font-weight:700;letter-spacing:.02em;margin:0;color:var(--azul)}
+.estado{font-size:12.5px;color:var(--tinta-suave)}
+.estado b{font-weight:600;color:var(--tinta)}
+.cierre{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:17px;font-variant-numeric:tabular-nums}
+.cierre .mon{font-size:11.5px;color:var(--tinta-suave);margin-right:3px}
+
+.tengo{
+  display:inline-flex;align-items:center;gap:6px;cursor:pointer;
+  font-size:12px;color:var(--tinta-suave);user-select:none;
+  border:1px solid var(--regla-fuerte);padding:2px 8px 2px 6px;
+}
+.tengo input{accent-color:var(--verde);width:13px;height:13px;margin:0;cursor:pointer}
+.papel.mio .tengo{color:var(--tinta)}
+
+.sello{font-family:"JetBrains Mono",monospace;font-size:11px;padding:2px 6px}
+.sello.v{background:var(--verde-fondo);color:var(--verde)}
+.sello.r{background:var(--rojo-fondo);color:var(--rojo)}
+
+.grafico{position:relative;padding-top:15px;margin:9px 0 3px}
+.hist{width:100%;height:auto;display:block}
+.marca-fecha{
+  position:absolute;top:0;font-family:"JetBrains Mono",monospace;font-size:10px;
+  color:var(--tinta);line-height:1;white-space:nowrap;
+}
+.hist-pie{display:flex;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--tinta-suave)}
+
+.tenencia{margin-top:11px;padding-top:10px;border-top:1px solid var(--regla)}
+.renta{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.pct{font-family:"JetBrains Mono",monospace;font-weight:600;font-size:21px;font-variant-numeric:tabular-nums;padding:1px 7px}
+.pct.sube{color:var(--verde);background:var(--verde-fondo)}
+.pct.baja{color:var(--rojo);background:var(--rojo-fondo)}
+.renta .desde{font-size:12.5px;color:var(--tinta-suave)}
+
+.balance{margin-top:9px;font-size:13px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.balance .dia{font-family:"JetBrains Mono",monospace;font-size:12px}
+.balance.cerca{background:var(--rojo-fondo);color:var(--rojo);padding:6px 9px;font-weight:600;border-left:2px solid var(--rojo)}
+
+.campo{display:flex;flex-direction:column;gap:2px;margin-top:10px;width:160px}
+.campo span{font-size:11px;color:var(--tinta-suave)}
+.campo input{
+  font-family:"JetBrains Mono",monospace;font-size:13px;
+  background:#F7FAFB;color:var(--tinta);border:1px solid var(--regla-fuerte);padding:4px 6px;
+}
+.nota{font-size:11.5px;color:var(--tinta-suave);margin:7px 0 0;max-width:50ch}
+
+.pie{margin-top:30px;padding-top:14px;border-top:1px solid var(--sobre-regla);display:flex;gap:8px;flex-wrap:wrap}
+button{
+  font-family:Bitter,Georgia,serif;font-size:12.5px;background:none;color:var(--sobre);
+  border:1px solid var(--sobre-regla);padding:5px 11px;cursor:pointer;
+}
+button:hover{background:var(--sobre-regla)}
+button[aria-pressed="true"]{background:var(--sobre);color:var(--fondo);border-color:var(--sobre)}
+.aviso{font-size:11.5px;color:var(--sobre-suave);margin:14px 0 0;max-width:64ch;line-height:1.6}
+
+:focus-visible{outline:2px solid var(--verde-claro);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:560px){ .cierre{margin-left:0;width:100%} .tengo{order:-1} .campo{width:100%} }
+</style>
+</head>
+<body>
+<div class="hoja">
+
+  <div class="marca">
+    <h1>Cruces MACD</h1>
+    <span class="rueda" id="rueda"></span>
+  </div>
+
+  <h2 class="titulo salida">Alerta de salida</h2>
+  <p class="bajada" id="baj-salida"></p>
+  <div id="salidas"></div>
+
+  <h2 class="titulo entrada">Alerta de entrada</h2>
+  <p class="bajada" id="baj-entrada"></p>
+  <div id="entradas"></div>
+
+  <h2 class="titulo" id="t-mias">Tengo</h2>
+  <div id="mias"></div>
+
+  <div class="pie">
+    <button type="button" id="exportar">Exportar mis datos</button>
+    <button type="button" id="importar">Importar</button>
+    <button type="button" id="borrar">Borrar todo</button>
+    <input type="file" id="archivo" accept="application/json" hidden>
+  </div>
+
+  <p class="aviso">
+    Subyacente en dólares, serie ajustada por dividendos, MACD 12/26/9 al cierre de Nueva York.
+    Actualizado el __ACTUALIZADO__. Una Entrada queda en pantalla 3 Ruedas desde el cruce. Una Salida queda mientras el papel siga tildado.
+    Los papeles bajistas que no tenés quedan fuera. Las marcas y las fechas se guardan en este navegador.
+  </p>
+
+</div>
+
+<script>
+const DATOS = __DATOS__;
+const VIGENCIA = 3;
+
+const MES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const fecha = s => { const [a,m,d] = s.split("-").map(Number); return new Date(a, m-1, d); };
+const dia = s => { const f = fecha(s); return f.getDate() + " " + MES[f.getMonth()]; };
+const num = (n, d=2) => n.toLocaleString("es-AR", {minimumFractionDigits:d, maximumFractionDigits:d});
+const corta = s => { const f = fecha(s); return f.getDate() + "/" + (f.getMonth()+1) + "/" + String(f.getFullYear()).slice(-2); };
+const diasCal = (a, b) => Math.round((fecha(b) - fecha(a)) / 86400000);
+
+const CLAVE = "macd.tenencias.v3";
+let estado = {};
+
+function cargar(){
+  try{ const g = localStorage.getItem(CLAVE); if (g){ estado = JSON.parse(g); } }catch(e){}
+}
+function guardar(){ try{ localStorage.setItem(CLAVE, JSON.stringify(estado)); }catch(e){} }
+
+function ruedasDesde(t, f){
+  const s = DATOS[t].serie;
+  const i = s.findIndex(p => p.f >= f);
+  return i < 0 ? null : s.length - 1 - i;
+}
+function cierreEn(t, f){
+  let r = null;
+  for (const p of DATOS[t].serie){ if (p.f <= f) r = p; else break; }
+  return r;
+}
+function balanceDe(t){ return DATOS[t].balance; }
+
+function histograma(t, marca){
+  const s = DATOS[t].serie.slice(-70);
+  const ancho = 3, alto = 34, medio = alto/2, w = s.length * ancho;
+  const tope = Math.max(...s.map(p => Math.max(Math.abs(p.h), Math.abs(p.m), Math.abs(p.s)))) || 1;
+  const y = v => medio - (v / tope) * (medio - 2);
+
+  let barras = "";
+  s.forEach((p, i) => {
+    const h = Math.max(0.6, Math.abs(medio - y(p.h)));
+    barras += `<rect x="${i*ancho}" y="${(p.h >= 0 ? medio - h : medio).toFixed(2)}" width="${ancho-1}" height="${h.toFixed(2)}" fill="${p.h >= 0 ? "var(--verde)" : "var(--rojo)"}"/>`;
+  });
+
+  const trazo = k => s.map((p, i) => `${(i*ancho + (ancho-1)/2).toFixed(2)},${y(p[k]).toFixed(2)}`).join(" ");
+  const lineas =
+    `<polyline points="${trazo("s")}" fill="none" stroke="#E8A33D" stroke-width="1" vector-effect="non-scaling-stroke"/>` +
+    `<polyline points="${trazo("m")}" fill="none" stroke="#1A3E8C" stroke-width="1" vector-effect="non-scaling-stroke"/>`;
+
+  let linea = "", etiqueta = "";
+  if (marca){
+    const i = s.findIndex(p => p.f >= marca);
+    if (i >= 0){
+      const x = (i * ancho - 0.5).toFixed(1);
+      linea = `<line x1="${x}" y1="0" x2="${x}" y2="${alto}" stroke="var(--tinta)"
+                 stroke-width="1" stroke-dasharray="2 3" opacity="0.7" vector-effect="non-scaling-stroke"/>`;
+      const pct = ((i * ancho) / w) * 100;
+      const corr = pct < 8 ? "translateX(0)" : (pct > 92 ? "translateX(-100%)" : "translateX(-50%)");
+      etiqueta = `<span class="marca-fecha" style="left:${pct.toFixed(2)}%;transform:${corr}">${corta(s[i].f)}</span>`;
+    }
+  }
+
+  const svg = `<svg class="hist" viewBox="0 0 ${w} ${alto}" preserveAspectRatio="none" role="img"
+    aria-label="Histograma MACD y línea de Señal de las últimas ${s.length} Ruedas">
+    ${barras}<line x1="0" y1="${medio}" x2="${w}" y2="${medio}" stroke="var(--regla-fuerte)" stroke-width="1" vector-effect="non-scaling-stroke"/>${lineas}${linea}</svg>`;
+  return `<div class="grafico">${etiqueta}${svg}</div>`;
+}
+
+function losa(t, modo){
+  const d = DATOS[t];
+  const e = estado[t] || {tengo:false, desde:null};
+  const refFecha = (e.tengo && e.desde) ? e.desde : d.entrada.fecha;
+  const ref = cierreEn(t, refFecha);
+  const p = ref ? (d.cierre / ref.c - 1) * 100 : null;
+  const baja = modo === "salida" || (e.tengo && p !== null && p < 0);
+
+  const el = document.createElement("article");
+  el.className = "papel" + (baja ? " baja" : "") + (e.tengo ? " mio" : "");
+
+  let sello = "";
+  if (modo === "entrada"){
+    const quedan = VIGENCIA - ruedasDesde(t, d.cruce.fecha);
+    sello = `<span class="sello v">Vence en ${quedan} ${quedan === 1 ? "Rueda" : "Ruedas"}</span>`;
+  } else if (modo === "salida"){
+    sello = `<span class="sello r">Revisar</span>`;
+  }
+
+  let cuerpo = "";
+  if (e.tengo){
+    const b = balanceDe(t);
+    let balance;
+    if (b){
+      const faltan = diasCal(d.fecha, b);
+      balance = `<div class="balance ${faltan <= 7 ? "cerca" : ""}">
+        <span>${faltan <= 7 ? "Balance esta semana" : "Balance"}</span>
+        <span class="dia">${dia(b)} · en ${faltan} días</span></div>`;
+    } else {
+      balance = `<p class="nota">Sin fecha de balance disponible.</p>`;
+    }
+    const renta = ref
+      ? `<div class="renta">
+          <span class="pct ${p >= 0 ? "sube" : "baja"}">${p >= 0 ? "+" : "−"}${num(Math.abs(p))} %</span>
+          <span class="desde">Desde US$ ${num(ref.c)} del ${dia(ref.f)}</span></div>`
+      : `<p class="nota">La fecha de Entrada queda fuera de las Ruedas cargadas. Elegí una más reciente.</p>`;
+    cuerpo = `<div class="tenencia">
+      ${renta}
+      ${balance}
+      <label class="campo"><span>Día de Entrada</span>
+        <input type="date" class="in-fecha" value="${e.desde ?? ""}" max="${d.fecha}"></label>
+      ${e.desde ? "" : `<p class="nota">Sin fecha cargada, el rendimiento se mide desde el cruce de Entrada del ${dia(d.entrada.fecha)}.</p>`}
+    </div>`;
+  }
+
+  el.innerHTML = `
+    <div class="fila-1">
+      <label class="tengo"><input type="checkbox" ${e.tengo ? "checked" : ""}> Tengo</label>
+      <h3 class="tick">${t}</h3>
+      <span class="estado"><b>${d.cruce.tipo[0].toUpperCase() + d.cruce.tipo.slice(1)}</b> el ${dia(d.cruce.fecha)}</span>
+      ${sello}
+      <span class="cierre"><span class="mon">US$</span>${num(d.cierre)}</span>
+    </div>
+    ${histograma(t, e.tengo ? refFecha : null)}
+    <div class="hist-pie"><span>${d.serie.slice(-70)[0].f}</span><span>70 Ruedas · <b style="color:#1A3E8C">MACD</b> · <b style="color:#E8A33D">Señal</b></span><span>${d.fecha}</span></div>
+    ${cuerpo}`;
+
+  el.querySelector(".tengo input").addEventListener("change", ev => {
+    estado[t] = {tengo: ev.target.checked, desde: (estado[t] && estado[t].desde) || null};
+    guardar(); pintar();
+  });
+  const inf = el.querySelector(".in-fecha");
+  if (inf) inf.addEventListener("change", ev => {
+    estado[t] = Object.assign({tengo:true}, estado[t], {desde: ev.target.value || null});
+    guardar(); pintar();
+  });
+  return el;
+}
+
+function seccion(idLista, idBajada, tickers, modo, vacio, texto){
+  const cont = document.getElementById(idLista);
+  const baj = document.getElementById(idBajada);
+  cont.innerHTML = "";
+  if (tickers.length){
+    baj.textContent = texto(tickers.length);
+    tickers.forEach(t => cont.appendChild(losa(t, modo)));
+  } else {
+    baj.textContent = "";
+    cont.innerHTML = `<p class="vacio">${vacio}</p>`;
+  }
+}
+
+function pintar(){
+  document.getElementById("rueda").textContent = "Rueda del " + DATOS.AAPL.fecha;
+  const mio = t => estado[t] && estado[t].tengo;
+  const todos = Object.keys(DATOS);
+
+  const salidas = todos.filter(t => mio(t) && DATOS[t].cruce.tipo === "salida")
+    .sort((a,b) => DATOS[a].cruce.fecha < DATOS[b].cruce.fecha ? 1 : -1);
+
+  const entradas = todos.filter(t => !mio(t) && DATOS[t].cruce.tipo === "entrada"
+      && ruedasDesde(t, DATOS[t].cruce.fecha) < VIGENCIA)
+    .sort((a,b) => DATOS[a].cruce.fecha < DATOS[b].cruce.fecha ? 1 : -1);
+
+  const resto = todos.filter(t => mio(t) && DATOS[t].cruce.tipo !== "salida").sort();
+
+  seccion("salidas", "baj-salida", salidas, "salida",
+    "Ningún papel tuyo dio señal de Salida.",
+    n => n === 1 ? "Un papel que tenés cruzó a la baja." : n + " papeles que tenés cruzaron a la baja.");
+
+  seccion("entradas", "baj-entrada", entradas, "entrada",
+    "Ninguna Entrada vigente. Vuelven a aparecer el día que un papel del universo cruce al alza.",
+    n => n === 1 ? "Un papel cruzó al alza y sigue vigente." : n + " papeles cruzaron al alza y siguen vigentes.");
+
+  const m = document.getElementById("mias");
+  m.innerHTML = "";
+  document.getElementById("t-mias").style.display = resto.length ? "" : "none";
+  resto.forEach(t => m.appendChild(losa(t, "mia")));
+}
+
+document.getElementById("exportar").addEventListener("click", () => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(estado, null, 1)], {type:"application/json"}));
+  a.download = "macd-tenencias.json"; a.click(); URL.revokeObjectURL(a.href);
+});
+document.getElementById("importar").addEventListener("click", () => document.getElementById("archivo").click());
+document.getElementById("archivo").addEventListener("change", ev => {
+  const f = ev.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => { try{ estado = JSON.parse(r.result); guardar(); pintar(); }catch(e){} };
+  r.readAsText(f);
+});
+document.getElementById("borrar").addEventListener("click", () => { estado = {}; guardar(); pintar(); });
+
+cargar();
+pintar();
+</script>
+</body>
+</html>

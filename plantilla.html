@@ -83,6 +83,8 @@ body{
 .sello{font-family:"JetBrains Mono",monospace;font-size:11px;padding:2px 6px}
 .sello.v{background:var(--verde-fondo);color:var(--verde)}
 .sello.r{background:var(--rojo-fondo);color:var(--rojo)}
+.sello.p{background:none;color:var(--tinta-suave);border:1px dashed var(--regla-fuerte)}
+.cierre .curso{font-family:Bitter,Georgia,serif;font-size:11px;color:var(--tinta-suave);margin-left:5px}
 
 .grafico{position:relative;padding-top:15px;margin:9px 0 3px}
 .hist{width:100%;height:auto;display:block}
@@ -152,8 +154,10 @@ button[aria-pressed="true"]{background:var(--sobre);color:var(--fondo);border-co
   </div>
 
   <p class="aviso">
-    Subyacente en dólares, serie ajustada por dividendos, MACD 12/26/9 al cierre de Nueva York.
-    Actualizado el __ACTUALIZADO__. Una Entrada queda en pantalla 3 Ruedas desde el cruce. Una Salida queda mientras el papel siga tildado.
+    Subyacente en dólares, serie ajustada por dividendos, MACD 12/26/9 diario.
+    Actualizado el __ACTUALIZADO__. Con Nueva York abierto, la rueda del día está en curso y sus cruces son provisorios hasta el cierre.
+    Entrada: cruce al alza después de que el MACD tocó un fondo de −3 % del precio o más abajo. Salida: cualquier cruce a la baja.
+    Una Entrada queda en pantalla 3 Ruedas desde el cruce. Una Salida queda mientras el papel siga tildado.
     Los papeles bajistas que no tenés quedan fuera. Las marcas y las fechas se guardan en este navegador.
   </p>
 
@@ -169,12 +173,27 @@ const dia = s => { const f = fecha(s); return f.getDate() + " " + MES[f.getMonth
 const num = (n, d=2) => n.toLocaleString("es-AR", {minimumFractionDigits:d, maximumFractionDigits:d});
 const corta = s => { const f = fecha(s); return f.getDate() + "/" + (f.getMonth()+1) + "/" + String(f.getFullYear()).slice(-2); };
 const diasCal = (a, b) => Math.round((fecha(b) - fecha(a)) / 86400000);
+const iso = f => f.getFullYear() + "-" + String(f.getMonth()+1).padStart(2,"0") + "-" + String(f.getDate()).padStart(2,"0");
+const HOY = iso(new Date());
+const TICKERS = Object.keys(DATOS);
+const RUEDA = TICKERS.map(t => DATOS[t].fecha).sort().pop() || "";
+const EN_CURSO = TICKERS.some(t => DATOS[t].provisoria);
+const tipoDe = t => DATOS[t].cruce ? DATOS[t].cruce.tipo : null;
+const mayus = s => s[0].toUpperCase() + s.slice(1);
 
 const CLAVE = "macd.tenencias.v3";
 let estado = {};
 
 function cargar(){
-  try{ const g = localStorage.getItem(CLAVE); if (g){ estado = JSON.parse(g); } }catch(e){}
+  try{
+    const g = localStorage.getItem(CLAVE);
+    if (g){ const v = JSON.parse(g); if (valido(v)) estado = v; }
+  }catch(e){}
+}
+function valido(v){
+  if (!v || typeof v !== "object" || Array.isArray(v)) return false;
+  return Object.values(v).every(x => x && typeof x === "object" && typeof x.tengo === "boolean"
+    && (x.desde === null || x.desde === undefined || /^\d{4}-\d{2}-\d{2}$/.test(x.desde)));
 }
 function guardar(){ try{ localStorage.setItem(CLAVE, JSON.stringify(estado)); }catch(e){} }
 
@@ -188,7 +207,11 @@ function cierreEn(t, f){
   for (const p of DATOS[t].serie){ if (p.f <= f) r = p; else break; }
   return r;
 }
-function balanceDe(t){ return DATOS[t].balance; }
+// Yahoo a veces sigue informando un balance que ya pasó: se descarta.
+function balanceDe(t){
+  const b = DATOS[t].balance;
+  return (b && b >= HOY) ? b : null;
+}
 
 function histograma(t, marca){
   const s = DATOS[t].serie.slice(-70);
@@ -208,7 +231,9 @@ function histograma(t, marca){
     `<polyline points="${trazo("m")}" fill="none" stroke="#1A3E8C" stroke-width="1" vector-effect="non-scaling-stroke"/>`;
 
   let linea = "", etiqueta = "";
-  if (marca){
+  // Una entrada anterior a la ventana del grafico no se dibuja: pegarla al
+  // borde izquierdo mostraria una fecha falsa.
+  if (marca && marca >= s[0].f){
     const i = s.findIndex(p => p.f >= marca);
     if (i >= 0){
       const x = (i * ancho - 0.5).toFixed(1);
@@ -229,8 +254,8 @@ function histograma(t, marca){
 function losa(t, modo){
   const d = DATOS[t];
   const e = estado[t] || {tengo:false, desde:null};
-  const refFecha = (e.tengo && e.desde) ? e.desde : d.entrada.fecha;
-  const ref = cierreEn(t, refFecha);
+  const refFecha = (e.tengo && e.desde) ? e.desde : (d.entrada ? d.entrada.fecha : null);
+  const ref = refFecha ? cierreEn(t, refFecha) : null;
   const p = ref ? (d.cierre / ref.c - 1) * 100 : null;
   const baja = modo === "salida" || (e.tengo && p !== null && p < 0);
 
@@ -244,16 +269,19 @@ function losa(t, modo){
   } else if (modo === "salida"){
     sello = `<span class="sello r">Revisar</span>`;
   }
+  if (d.cruce && d.cruce.provisorio){
+    sello += ` <span class="sello p">Provisorio</span>`;
+  }
 
   let cuerpo = "";
   if (e.tengo){
     const b = balanceDe(t);
     let balance;
     if (b){
-      const faltan = diasCal(d.fecha, b);
+      const faltan = diasCal(HOY, b);
       balance = `<div class="balance ${faltan <= 7 ? "cerca" : ""}">
         <span>${faltan <= 7 ? "Balance esta semana" : "Balance"}</span>
-        <span class="dia">${dia(b)} · en ${faltan} días</span></div>`;
+        <span class="dia">${dia(b)} · ${faltan === 0 ? "hoy" : faltan === 1 ? "mañana" : "en " + faltan + " días"}</span></div>`;
     } else {
       balance = `<p class="nota">Sin fecha de balance disponible.</p>`;
     }
@@ -261,13 +289,15 @@ function losa(t, modo){
       ? `<div class="renta">
           <span class="pct ${p >= 0 ? "sube" : "baja"}">${p >= 0 ? "+" : "−"}${num(Math.abs(p))} %</span>
           <span class="desde">Desde US$ ${num(ref.c)} del ${dia(ref.f)}</span></div>`
-      : `<p class="nota">La fecha de Entrada queda fuera de las Ruedas cargadas. Elegí una más reciente.</p>`;
+      : (refFecha
+          ? `<p class="nota">La fecha de Entrada queda fuera de las Ruedas cargadas. Elegí una más reciente.</p>`
+          : `<p class="nota">Este papel no tiene una Entrada válida en la historia leída. Cargá el Día de Entrada para ver el rendimiento.</p>`);
     cuerpo = `<div class="tenencia">
       ${renta}
       ${balance}
       <label class="campo"><span>Día de Entrada</span>
         <input type="date" class="in-fecha" value="${e.desde ?? ""}" max="${d.fecha}"></label>
-      ${e.desde ? "" : `<p class="nota">Sin fecha cargada, el rendimiento se mide desde el cruce de Entrada del ${dia(d.entrada.fecha)}.</p>`}
+      ${(e.desde || !d.entrada) ? "" : `<p class="nota">Sin fecha cargada, el rendimiento se mide desde el cruce de Entrada del ${dia(d.entrada.fecha)}.</p>`}
     </div>`;
   }
 
@@ -275,9 +305,9 @@ function losa(t, modo){
     <div class="fila-1">
       <label class="tengo"><input type="checkbox" ${e.tengo ? "checked" : ""}> Tengo</label>
       <h3 class="tick">${t}</h3>
-      <span class="estado"><b>${d.cruce.tipo[0].toUpperCase() + d.cruce.tipo.slice(1)}</b> el ${dia(d.cruce.fecha)}</span>
+      <span class="estado">${d.cruce ? `<b>${mayus(d.cruce.tipo)}</b> el ${dia(d.cruce.fecha)}` : "Sin cruces válidos"}</span>
       ${sello}
-      <span class="cierre"><span class="mon">US$</span>${num(d.cierre)}</span>
+      <span class="cierre"><span class="mon">US$</span>${num(d.cierre)}${d.provisoria ? `<span class="curso">En curso</span>` : ""}</span>
     </div>
     ${histograma(t, e.tengo ? refFecha : null)}
     <div class="hist-pie"><span>${d.serie.slice(-70)[0].f}</span><span>70 Ruedas · <b style="color:#1A3E8C">MACD</b> · <b style="color:#E8A33D">Señal</b></span><span>${d.fecha}</span></div>
@@ -309,25 +339,28 @@ function seccion(idLista, idBajada, tickers, modo, vacio, texto){
 }
 
 function pintar(){
-  document.getElementById("rueda").textContent = "Rueda del " + DATOS.AAPL.fecha;
+  document.getElementById("rueda").textContent = "Rueda del " + RUEDA + (EN_CURSO ? " · En curso" : "");
   const mio = t => estado[t] && estado[t].tengo;
-  const todos = Object.keys(DATOS);
+  const todos = TICKERS;
 
-  const salidas = todos.filter(t => mio(t) && DATOS[t].cruce.tipo === "salida")
+  const salidas = todos.filter(t => mio(t) && tipoDe(t) === "salida")
     .sort((a,b) => DATOS[a].cruce.fecha < DATOS[b].cruce.fecha ? 1 : -1);
 
-  const entradas = todos.filter(t => !mio(t) && DATOS[t].cruce.tipo === "entrada"
-      && ruedasDesde(t, DATOS[t].cruce.fecha) < VIGENCIA)
+  const entradas = todos.filter(t => {
+      if (mio(t) || tipoDe(t) !== "entrada") return false;
+      const r = ruedasDesde(t, DATOS[t].cruce.fecha);
+      return r !== null && r < VIGENCIA;
+    })
     .sort((a,b) => DATOS[a].cruce.fecha < DATOS[b].cruce.fecha ? 1 : -1);
 
-  const resto = todos.filter(t => mio(t) && DATOS[t].cruce.tipo !== "salida").sort();
+  const resto = todos.filter(t => mio(t) && tipoDe(t) !== "salida").sort();
 
   seccion("salidas", "baj-salida", salidas, "salida",
     "Ningún papel tuyo dio señal de Salida.",
     n => n === 1 ? "Un papel que tenés cruzó a la baja." : n + " papeles que tenés cruzaron a la baja.");
 
   seccion("entradas", "baj-entrada", entradas, "entrada",
-    "Ninguna Entrada vigente. Vuelven a aparecer el día que un papel del universo cruce al alza.",
+    "Ninguna Entrada vigente. Aparece una cuando un papel del universo cruza al alza después de un fondo de −3 % o más.",
     n => n === 1 ? "Un papel cruzó al alza y sigue vigente." : n + " papeles cruzaron al alza y siguen vigentes.");
 
   const m = document.getElementById("mias");
@@ -339,16 +372,25 @@ function pintar(){
 document.getElementById("exportar").addEventListener("click", () => {
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([JSON.stringify(estado, null, 1)], {type:"application/json"}));
-  a.download = "macd-tenencias.json"; a.click(); URL.revokeObjectURL(a.href);
+  a.download = "macd-tenencias.json"; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 });
 document.getElementById("importar").addEventListener("click", () => document.getElementById("archivo").click());
 document.getElementById("archivo").addEventListener("change", ev => {
-  const f = ev.target.files[0]; if (!f) return;
+  const f = ev.target.files[0]; ev.target.value = ""; if (!f) return;
   const r = new FileReader();
-  r.onload = () => { try{ estado = JSON.parse(r.result); guardar(); pintar(); }catch(e){} };
+  r.onload = () => {
+    let v = null;
+    try{ v = JSON.parse(r.result); }catch(e){}
+    if (!valido(v)){ alert("El archivo no es una exportación de este panel. No se cambió nada."); return; }
+    estado = v; guardar(); pintar();
+  };
   r.readAsText(f);
 });
-document.getElementById("borrar").addEventListener("click", () => { estado = {}; guardar(); pintar(); });
+document.getElementById("borrar").addEventListener("click", () => {
+  if (!confirm("Se borran todos los tildes y fechas de este navegador. ¿Seguir?")) return;
+  estado = {}; guardar(); pintar();
+});
 
 cargar();
 pintar();

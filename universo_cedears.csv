@@ -1,0 +1,380 @@
+ticker,byma,nombre,mercado,ratio,tipo,rankea
+AAL,AAL,American Airlines,NASDAQ,2:1,accion,1
+AAP,AAP,Advance Auto Parts,NYSE,14:1,accion,1
+AAPL,AAPL,Apple,NASDAQ,20:1,accion,1
+ABBV,ABBV,AbbVie,NYSE,10:1,accion,1
+ABEV,ABEV,Ambev,NASDAQ,1:3,accion,1
+ABNB,ABNB,Airbnb,NASDAQ,15:1,accion,1
+ABT,ABT,Abbott,NYSE,4:1,accion,1
+ACN,ACN,Accenture,NYSE,75:1,accion,1
+ACWI,ACWI,iShares MSCI ACWI,NASDAQ,26:1,etf,1
+ADBE,ADBE,Adobe,NASDAQ,44:1,accion,1
+AGRO,ADGO,Adecoagro,NYSE,1:1,accion,1
+ADI,ADI,Analog Devices,NASDAQ,15:1,accion,1
+ADP,ADP,ADP,NASDAQ,6:1,accion,1
+AEG,AEG,Aegon,NYSE,1:1,accion,1
+AEM,AEM,Agnico Eagle,NYSE,6:1,accion,1
+AI,AI,C3.ai,NYSE,5:1,accion,1
+AIG,AIG,AIG,NYSE,5:1,accion,1
+AKO-B,AKO.B,Embotelladora Andina,NYSE,1:1,accion,1
+ALAB,ALAB,Astera Labs,NASDAQ,44:1,accion,1
+AMAT,AMAT,Applied Materials,NASDAQ,5:1,accion,1
+AMD,AMD,AMD,NASDAQ,10:1,accion,1
+AMGN,AMGN,Amgen,NASDAQ,30:1,accion,1
+AMX,AMX,America Movil,NYSE,1:1,accion,1
+AMZN,AMZN,Amazon,NYSE,144:1,accion,1
+ANET,ANET,Arista Networks,NYSE,29:1,accion,1
+ANF,ANF,Abercrombie,NYSE,1:1,accion,1
+ARCO,ARCO,Arcos Dorados,NYSE,1:2,accion,1
+ARKK,ARKK,ARK Innovation,NYSE Arca,10:1,etf,1
+ARM,ARM,ARM Holdings,NASDAQ,27:1,accion,1
+ASML,ASML,ASML,NASDAQ,146:1,accion,1
+ASR,ASR,Grupo Aeroportuario Sureste,NYSE,20:1,accion,1
+ASTS,ASTS,AST SpaceMobile,NASDAQ,15:1,accion,1
+AVGO,AVGO,Broadcom,NASDAQ,39:1,accion,1
+AVY,AVY,Avery Dennison,NYSE,18:1,accion,1
+AXP,AXP,American Express,NYSE,15:1,accion,1
+AZN,AZN,AstraZeneca,NYSE,4:1,accion,1
+B,B,Barrick,NYSE,2:1,accion,1
+BA,BA,Boeing,NYSE,24:1,accion,1
+BAC,BA.C,Bank of America,NYSE,4:1,accion,1
+BABA,BABA,Alibaba,NYSE,9:1,accion,1
+BAK,BAK,Braskem,NYSE,2:1,accion,1
+BB,BB,Blackberry,NASDAQ,3:1,accion,1
+BBD,BBD,Banco Bradesco,NYSE,1:1,accion,1
+BBVA,BBV,BBVA,NYSE,1:1,accion,1
+BCS,BCS,Barclays,NYSE,1:1,accion,1
+BHP,BHP,BHP,NYSE,2:1,accion,1
+BIDU,BIDU,Baidu,NASDAQ,11:1,accion,1
+BIIB,BIIB,Biogen,NASDAQ,13:1,accion,1
+BIOX,BIOX,Bioceres,NYSE American,1:1,accion,1
+BNY,BK,BNY (ex Bank of New York Mellon),NYSE,2:1,accion,1
+BKNG,BKNG,Booking,NASDAQ,700:1,accion,1
+BKR,BKR,Baker Hughes,NASDAQ,7:1,accion,1
+BMNR,BMNR,Bitmine,NYSE,8:1,accion,1
+BMY,BMY,Bristol-Myers,NYSE,3:1,accion,1
+BG,BNG,Bunge,NYSE,5:1,accion,1
+BP,BP,BP,NYSE,5:1,accion,1
+BRFS,BRFS,BRF,NYSE,1:3,accion,1
+BRK-B,BRKB,Berkshire Hathaway,NYSE,22:1,accion,1
+BSBR,BSBR,Santander Brasil,NYSE,1:1,accion,1
+BX,BX,Blackstone,NYSE,30:1,accion,1
+C,C,Citigroup,NYSE,3:1,accion,1
+CAAP,CAAP,Corporacion America Airports,NYSE,1:4,accion,1
+CAH,CAH,Cardinal Health,NYSE,3:1,accion,1
+CAJ,CAJ,Canon,NYSE,2:1,accion,1
+CAR,CAR,Avis Budget,NASDAQ,26:1,accion,1
+CAT,CAT,Caterpillar,NYSE,20:1,accion,1
+CBD,CBRD,Companhia Brasileira Dis,NYSE,1:1,accion,1
+CCJ,CCJ,Cameco,NYSE,23:1,accion,1
+CCL,CCL,Carnival,NYSE,3:1,accion,1
+CDE,CDE,Coeur Mining,NYSE,1:1,accion,1
+CEG,CEG,Constellation Energy,NASDAQ,45:1,accion,1
+CIBR,CIBR,First Trust Cybersecurity,NASDAQ,10:1,etf,1
+CL,CL,Colgate Palmolive,NYSE,3:1,accion,1
+CLS,CLS,Celestica,NYSE,20:1,accion,1
+COIN,COIN,Coinbase,NASDAQ,27:1,accion,1
+COP,COP,ConocoPhillips,NYSE,25:1,accion,1
+COPX,COPX,Global X Copper Miners,NYSE,14:1,etf,1
+COST,COST,Costco,NASDAQ,48:1,accion,1
+CRM,CRM,Salesforce,NYSE,18:1,accion,1
+CRWD,CRWD,CrowdStrike,NASDAQ,79:1,accion,1
+CRWV,CRWV,CoreWeave,NASDAQ,27:1,accion,1
+CSCO,CSCO,Cisco,NASDAQ,5:1,accion,1
+CVS,CVS,CVS Health,NYSE,15:1,accion,1
+CVX,CVX,Chevron,NYSE,16:1,accion,1
+CX,CX,Cemex,NYSE,1:1,accion,1
+DAL,DAL,Delta Air Lines,NYSE,8:1,accion,1
+DD,DD,DuPont,NYSE,5:1,accion,1
+DE,DE,Deere,NYSE,40:1,accion,1
+DECK,DECK,Deckers,NYSE,25:1,accion,1
+DEO,DEO,Diageo,NYSE,6:1,accion,1
+DHR,DHR,Danaher,NYSE,54:1,accion,1
+DIA,DIA,SPDR Dow Jones,NYSE Arca,20:1,etf,1
+DIS,DISN,Disney,NYSE,12:1,accion,1
+DOCU,DOCU,DocuSign,NASDAQ,22:1,accion,1
+DOW,DOW,Dow,NYSE,6:1,accion,1
+E,E,Eni,NYSE,4:1,accion,1
+EA,EA,Electronic Arts,NASDAQ,14:1,accion,1
+EBAY,EBAY,eBay,NASDAQ,2:1,accion,1
+EBR,EBR,Eletrobras,NYSE,1:4,accion,1
+ECL,ECL,Ecolab,NYSE,56:1,accion,1
+EEM,EEM,iShares MSCI Emerging,NYSE Arca,5:1,etf,1
+EFA,EFA,iShares MSCI EAFE,NYSE,18:1,etf,1
+EFX,EFX,Equifax,NYSE,16:1,accion,1
+ELP,ELP,Copel,NYSE,1:3,accion,1
+EQNR,EQNR,Equinor,NYSE,6:1,accion,1
+ERIC,ERIC,Ericsson,NASDAQ,2:1,accion,1
+ERJ,ERJ,Embraer,NYSE,1:1,accion,1
+ESGU,ESGU,iShares ESG MSCI USA,NASDAQ,30:1,etf,1
+ETHA,ETHA,iShares Ethereum,NASDAQ,5:1,etf,1
+ETSY,ETSY,Etsy,NASDAQ,16:1,accion,1
+EWJ,EWJ,iShares MSCI Japan,NYSE Arca,14:1,etf,1
+EWY,EWY,iShares MSCI South Korea,NYSE ARCA,50:1,etf,1
+EWZ,EWZ,iShares MSCI Brazil,NYSE Arca,2:1,etf,1
+F,F,Ford,NYSE,1:1,accion,1
+FCX,FCX,Freeport-McMoRan,NYSE,3:1,accion,1
+FDX,FDX,FedEx,NYSE,10:1,accion,1
+FI,FISV,Fiserv,NASDAQ,11:1,accion,1
+FMX,FMX,Femsa,NYSE,6:1,accion,1
+FSLR,FSLR,First Solar,NASDAQ,18:1,accion,1
+FXI,FXI,iShares China Large-Cap,NYSE,5:1,etf,1
+GDX,GDX,VanEck Gold Miners,NYSE,10:1,etf,1
+GE,GE,General Electric,NYSE,8:1,accion,1
+GFI,GFI,Gold Fields,NYSE,1:1,accion,1
+GGB,GGB,Gerdau,NYSE,1:4,accion,1
+GILD,GILD,Gilead,NASDAQ,4:1,accion,1
+GLD,GLD,SPDR Gold Trust,NYSE,50:1,etf,1
+GLNG,GLNG,Golar LNG,NASDAQ,10:1,accion,1
+GLOB,GLOB,Globant,NYSE,18:1,accion,1
+GLW,GLW,Corning,NYSE,4:1,accion,1
+GM,GM,General Motors,NYSE,6:1,accion,1
+GOOGL,GOOGL,Alphabet,NASDAQ,58:1,accion,1
+GPRK,GPRK,GeoPark,NYSE,1:1,accion,1
+GRMN,GRMN,Garmin,NASDAQ,3:1,accion,1
+GS,GS,Goldman Sachs,NYSE,13:1,accion,1
+GSK,GSK,GSK,NYSE,4:1,accion,1
+HAL,HAL,Halliburton,NYSE,2:1,accion,1
+HD,HD,Home Depot,NYSE,32:1,accion,1
+HDB,HDB,HDFC Bank,NYSE,2:1,accion,1
+HIMS,HIMS,Hims & Hers,NYSE,4:1,accion,1
+HL,HL,Hecla Mining,NYSE,1:1,accion,1
+HMC,HMC,Honda,NYSE,1:1,accion,1
+HMY,HMY,Harmony Gold,NYSE,1:1,accion,1
+HOG,HOG,Harley-Davidson,NYSE,3:1,accion,1
+HON,HON,Honeywell,NYSE,8:1,accion,1
+HOOD,HOOD,Robinhood,NASDAQ,29:1,accion,1
+HPQ,HPQ,HP,NYSE,1:1,accion,1
+HSBC,HSBC,HSBC,NYSE,2:1,accion,1
+HSY,HSY,Hershey,NYSE,21:1,accion,1
+HUT,HUT,Hut 8,NASDAQ,5:1,accion,1
+HWM,HWM,Howmet Aerospace,NYSE,1:1,accion,1
+IBB,IBB,iShares Nasdaq Biotech,NASDAQ,27:1,etf,1
+IBIT,IBIT,iShares Bitcoin Trust,NASDAQ,10:1,etf,1
+IBM,IBM,IBM,NYSE,15:1,accion,1
+IBN,IBN,ICICI Bank,NYSE,1:1,accion,1
+ICLN,ICLN,iShares Global Clean Energy,NASDAQ,5:1,etf,1
+IEMG,IEMG,iShares Core MSCI EM,NYSE,12:1,etf,1
+IEUR,IEUR,iShares Core MSCI Europe,NYSE Arca,11:1,etf,1
+IFF,IFF,Intl Flavors & Fragrances,NYSE,12:1,accion,1
+IJH,IJH,iShares Core S&P Mid-Cap,NYSE Arca,12:1,etf,1
+ILF,ILF,iShares Latin America 40,NYSE,6:1,etf,1
+INFY,INFY,Infosys,NASDAQ,1:1,accion,1
+ING,ING,ING Groep,NYSE,3:1,accion,1
+INTC,INTC,Intel,NASDAQ,5:1,accion,1
+IP,IP,International Paper,NYSE,4:1,accion,1
+IREN,IREN,IREN,NASDAQ,12:1,accion,1
+ISRG,ISRG,Intuitive Surgical,NASDAQ,90:1,accion,1
+ITA,ITA,iShares Aerospace & Defense,CBOE,50:1,etf,1
+ITUB,ITUB,Itau Unibanco,NYSE,1:1,accion,1
+IVE,IVE,iShares S&P 500 Value,NYSE Arca,40:1,etf,1
+IVV,IVV,iShares Core S&P 500,NYSE,692:1,etf,1
+IVW,IVW,iShares S&P 500 Growth,NYSE Arca,20:1,etf,1
+IWM,IWM,iShares Russell 2000,NYSE Arca,10:1,etf,1
+JCI,JCI,Johnson Controls,NYSE,2:1,accion,1
+JD,JD,JD.com,NASDAQ,4:1,accion,1
+JMIA,JMIA,Jumia,NYSE,1:1,accion,1
+JNJ,JNJ,Johnson & Johnson,NYSE,15:1,accion,1
+JPM,JPM,JPMorgan,NYSE,15:1,accion,1
+KB,KB,KB Financial,NYSE,2:1,accion,1
+KEEL,KEEL,Keel Infrastructure (ex Bitfarms),NASDAQ,1:5,accion,1
+KGC,KGC,Kinross Gold,NYSE,1:1,accion,1
+KMB,KMB,Kimberly-Clark,NYSE,6:1,accion,1
+KO,KO,Coca-Cola,NYSE,5:1,accion,1
+KOF,KOFM,Coca-Cola Femsa,NYSE,2:1,accion,1
+LAC,LAC,Lithium Americas,NYSE,1:1,accion,1
+LAR,LAR,Lithium Americas Argentina,NYSE,1:1,accion,1
+LLY,LLY,Eli Lilly,NYSE,56:1,accion,1
+LMT,LMT,Lockheed Martin,NYSE,20:1,accion,1
+LND,LND,Brasilagro,NYSE,1:1,accion,1
+LRCX,LRCX,Lam Research,NASDAQ,56:1,accion,1
+LVS,LVS,Las Vegas Sands,NYSE,2:1,accion,1
+LYG,LYG,Lloyds Banking,NYSE,2:1,accion,1
+MA,MA,Mastercard,NYSE,33:1,accion,1
+MCD,MCD,McDonald's,NYSE,24:1,accion,1
+MDLZ,MDLZ,Mondelez,NASDAQ,15:1,accion,1
+MDT,MDT,Medtronic,NYSE,4:1,accion,1
+MELI,MELI,MercadoLibre,NASDAQ,120:1,accion,1
+META,META,Meta Platforms,NASDAQ,24:1,accion,1
+MFG,MFG,Mizuho,NYSE,1:1,accion,1
+MRSH,MMC,Marsh (ex Marsh & McLennan),NYSE,16:1,accion,1
+MMM,MMM,3M,NYSE,10:1,accion,1
+MO,MO,Altria,NYSE,4:1,accion,1
+MOS,MOS,Mosaic,NYSE,5:1,accion,1
+MP,MP,MP Materials,NYSE,10:1,accion,1
+MRK,MRK,Merck,NYSE,5:1,accion,1
+MRNA,MRNA,Moderna,NASDAQ,19:1,accion,1
+MRVL,MRVL,Marvell,NASDAQ,14:1,accion,1
+MSFT,MSFT,Microsoft,NASDAQ,30:1,accion,1
+MSI,MSI,Motorola Solutions,NYSE,20:1,accion,1
+MSTR,MSTR,MicroStrategy,NASDAQ,20:1,accion,1
+MU,MU,Micron,NASDAQ,5:1,accion,1
+MUFG,MUFG,Mitsubishi UFJ,NYSE,1:1,accion,1
+MUX,MUX,McEwen Mining,NYSE,2:1,accion,1
+NBIS,NBIS,Nebius Group,NASDAQ,27:1,accion,1
+NEE,NEE,NextEra Energy,NYSE,19:1,accion,1
+NEM,NEM,Newmont,NYSE,3:1,accion,1
+NFLX,NFLX,Netflix,NASDAQ,48:1,accion,1
+NG,NG,NovaGold,NYSE,1:4,accion,1
+NGG,NGG,National Grid,NYSE,2:1,accion,1
+NIO,NIO,NIO,NYSE,4:1,accion,1
+NKE,NKE,Nike,NYSE,12:1,accion,1
+NMR,NMR,Nomura,NYSE,1:1,accion,1
+NOK,NOKA,Nokia,NYSE,1:1,accion,1
+NOW,NOW,ServiceNow,NYSE,172:1,accion,1
+NTES,NTES,NetEase,NASDAQ,14:1,accion,1
+NUE,NUE,Nucor,NYSE,16:1,accion,1
+NVDA,NVDA,Nvidia,NASDAQ,24:1,accion,1
+NVO,NVO,Novo Nordisk,NYSE,7:1,accion,1
+NVS,NVS,Novartis,NYSE,4:1,accion,1
+NXE,NXE,NexGen Energy,NYSE,1:1,accion,1
+O,O,Realty Income,NYSE,13:1,accion,1
+OKLO,OKLO,Oklo,NYSE,28:1,accion,1
+ONDS,ONDS,Ondas Holdings,NASDAQ,2:1,accion,1
+ORAN,ORAN,Orange,NYSE,1:1,accion,1
+ORCL,ORCL,Oracle,NYSE,3:1,accion,1
+ORLY,ORLY,O'Reilly Automotive,NASDAQ,222:1,accion,1
+OXY,OXY,Occidental Petroleum,NYSE,5:1,accion,1
+PAAS,PAAS,Pan American Silver,NASDAQ,3:1,accion,1
+PAC,PAC,Grupo Aeroportuario Pacifico,NYSE,16:1,accion,1
+PAGS,PAGS,PagSeguro,NYSE,3:1,accion,1
+PANW,PANW,Palo Alto Networks,NASDAQ,50:1,accion,1
+PATH,PATH,UiPath,NYSE,2:1,accion,1
+PBI,PBI,Pitney Bowes,NYSE,1:1,accion,1
+PBR,PBR,Petrobras,NYSE,1:1,accion,1
+PCAR,PCAR,Paccar,NASDAQ,3:1,accion,1
+PDD,PDD,PDD Holdings,NASDAQ,25:1,accion,1
+PEP,PEP,PepsiCo,NASDAQ,18:1,accion,1
+PFE,PFE,Pfizer,NYSE,4:1,accion,1
+PG,PG,Procter & Gamble,NYSE,15:1,accion,1
+PHG,PHG,Philips,NYSE,5:1,accion,1
+PINS,PINS,Pinterest,NYSE,7:1,accion,1
+PKX,PKS,Posco Holdings,NYSE,3:1,accion,1
+PLTR,PLTR,Palantir,NYSE,3:1,accion,1
+PM,PM,Philip Morris,NYSE,18:1,accion,1
+PSO,PSO,Pearson,NYSE,1:1,accion,1
+PSQ,PSQ,ProShares Short QQQ,NYSE Arca,8:1,etf,0
+PSX,PSX,Phillips 66,NYSE,6:1,accion,1
+PYPL,PYPL,PayPal,NASDAQ,8:1,accion,1
+QCOM,QCOM,Qualcomm,NASDAQ,11:1,accion,1
+QQQ,QQQ,Invesco QQQ,NASDAQ,20:1,etf,1
+RACE,RACE,Ferrari,NYSE,83:1,accion,1
+RBLX,RBLX,Roblox,NYSE,2:1,accion,1
+RGTI,RGTI,Rigetti Computing,NASDAQ,2:1,accion,1
+RIO,RIO,Rio Tinto,NYSE,8:1,accion,1
+RIOT,RIOT,Riot Platforms,NASDAQ,3:1,accion,1
+RKLB,RKLB,Rocket Lab,NASDAQ,12:1,accion,1
+ROKU,ROKU,Roku,NASDAQ,13:1,accion,1
+ROST,ROST,Ross Stores,NASDAQ,4:1,accion,1
+RSP,RSP,Invesco S&P 500 Equal Weight,NYSE ARCA,30:1,etf,1
+RTX,RTX,RTX,NYSE,5:1,accion,1
+SAN,SAN,Banco Santander,NYSE,1:4,accion,1
+SAP,SAP,SAP,NYSE,6:1,accion,1
+SATL,SATL,Satellogic,NASDAQ,1:1,accion,1
+SBS,SBS,Sabesp,NYSE,1:2,accion,1
+SBUX,SBUX,Starbucks,NASDAQ,12:1,accion,1
+SCCO,SCCO,Southern Copper,NYSE,2:1,accion,1
+SCHW,SCHW,Charles Schwab,NYSE,13:1,accion,1
+SDA,SDA,SunCar Technology,NASDAQ,2:1,accion,1
+SE,SE,Sea Ltd,NYSE,32:1,accion,1
+SH,SH,ProShares Short S&P500,NYSE,8:1,etf,0
+SHEL,SHEL,Shell,NYSE,2:1,accion,1
+SHOP,SHOP,Shopify,NYSE,107:1,accion,1
+SID,SID,Companhia Siderurgica Nacional,NYSE,1:8,accion,1
+SLB,SLB,Schlumberger,NYSE,3:1,accion,1
+SLV,SLV,iShares Silver Trust,NYSE Arca,6:1,etf,1
+SMH,SMH,VanEck Semiconductor,NASDAQ,50:1,etf,1
+SNA,SNA,Snap-on,NYSE,6:1,accion,1
+SNAP,SNAP,Snap,NYSE,1:1,accion,1
+SNDK,SNDK,SanDisk,NASDAQ,170:1,accion,1
+SNOW,SNOW,Snowflake,NYSE,30:1,accion,1
+SONY,SONY,Sony,NYSE,8:1,accion,1
+SPGI,SPGI,S&P Global,NYSE,45:1,accion,1
+SPHQ,SPHQ,Invesco S&P 500 Quality,NYSE ARCA,14:1,etf,1
+SPOT,SPOT,Spotify,NYSE,28:1,accion,1
+SPXL,SPXL,Direxion S&P 500 Bull 3X,NYSE Arca,25:1,etf,0
+SPY,SPY,SPDR S&P 500,NYSE Arca,60:1,etf,1
+STLA,STLA,Stellantis,NYSE,5:1,accion,1
+STNE,STNE,StoneCo,NASDAQ,3:1,accion,1
+SUZ,SUZ,Suzano,NYSE,1:1,accion,1
+SWKS,SWKS,Skyworks,NASDAQ,21:1,accion,1
+SYY,SYY,Sysco,NYSE,8:1,accion,1
+T,T,AT&T,NYSE,3:1,accion,1
+TCOM,TCOM,Trip.com,NASDAQ,2:1,accion,1
+TEAM,TEAM,Atlassian,NASDAQ,47:1,accion,1
+TEF,TEFO,Telefonica,NYSE,8:1,accion,1
+TEM,TEM,Tempus AI,NASDAQ,12:1,accion,1
+TEN,TEN,Tenaris,NYSE,1:1,accion,1
+TGT,TGT,Target,NYSE,24:1,accion,1
+TIMB,TIMB,TIM Participacoes,NYSE,1:1,accion,1
+TJX,TJX,TJX Companies,NYSE,22:1,accion,1
+TM,TM,Toyota,NYSE,15:1,accion,1
+TMO,TMO,Thermo Fisher,NYSE,22:1,accion,1
+TMUS,TMUS,T-Mobile,NASDAQ,33:1,accion,1
+TQQQ,TQQQ,ProShares UltraPro QQQ,NASDAQ,25:1,etf,0
+TRIP,TRIP,Tripadvisor,NASDAQ,2:1,accion,1
+TRV,TRVV,Travelers,NYSE,6:1,accion,1
+TSLA,TSLA,Tesla,NASDAQ,15:1,accion,1
+TSM,TSM,Taiwan Semiconductor,NYSE,9:1,accion,1
+TTE,TTE,TotalEnergies,NYSE,3:1,accion,1
+TV,TV,Grupo Televisa,NYSE,3:1,accion,1
+TWLO,TWLO,Twilio,NYSE,36:1,accion,1
+TXN,TXN,Texas Instruments,NASDAQ,5:1,accion,1
+TX,TXR,Ternium,NYSE,4:1,accion,1
+UAL,UAL,United Airlines,NASDAQ,5:1,accion,1
+UBER,UBER,Uber,NYSE,2:1,accion,1
+UGP,UGP,Ultrapar,NYSE,1:1,accion,1
+UL,UL,Unilever,NYSE,3:1,accion,1
+NU,UN,Nu Holdings,NYSE,2:1,accion,1
+UNH,UNH,UnitedHealth,NYSE,33:1,accion,1
+UNP,UNP,Union Pacific,NYSE,20:1,accion,1
+UPST,UPST,Upstart,NASDAQ,5:1,accion,1
+URA,URA,Global X Uranium,NYSE Arca,5:1,etf,1
+URBN,URBN,Urban Outfitters,NASDAQ,2:1,accion,1
+USB,USB,US Bancorp,NYSE,5:1,accion,1
+USO,USO,United States Oil Fund,NYSE,15:1,etf,1
+V,V,Visa,NYSE,18:1,accion,1
+VALE,VALE,Vale,NYSE,2:1,accion,1
+VEA,VEA,Vanguard FTSE Developed,NYSE Arca,10:1,etf,1
+VIG,VIG,Vanguard Dividend Appreciation,NYSE Arca,39:1,etf,1
+VIST,VIST,Vista Energy,NYSE,3:1,accion,1
+VIV,VIV,Telefonica Brasil,NYSE,1:1,accion,1
+VOD,VOD,Vodafone,NASDAQ,1:1,accion,1
+VRTX,VRTX,Vertex Pharmaceuticals,NYSE,101:1,accion,1
+VST,VST,Vistra,NYSE,26:1,accion,1
+VXX,VXX,iPath S&P 500 VIX,CBOE,5:1,etf,0
+VZ,VZ,Verizon,NYSE,4:1,accion,1
+WFC,WFC,Wells Fargo,NYSE,5:1,accion,1
+WMT,WMT,Walmart,NYSE,18:1,accion,1
+XLB,XLB,Materials SPDR,NYSE Arca,18:1,etf,1
+XLC,XLC,Communication Services SPDR,NYSE Arca,19:1,etf,1
+XLE,XLE,Energy SPDR,NYSE Arca,2:1,etf,1
+XLF,XLF,Financial SPDR,NYSE Arca,2:1,etf,1
+XLI,XLI,Industrial SPDR,NYSE Arca,28:1,etf,1
+XLK,XLK,Technology SPDR,NYSE Arca,46:1,etf,1
+XLP,XLP,Consumer Staples SPDR,NYSE Arca,16:1,etf,1
+XLRE,XLRE,Real Estate SPDR,NYSE Arca,9:1,etf,1
+XLU,XLU,Utilities SPDR,NYSE Arca,15:1,etf,1
+XLV,XLV,Health Care SPDR,NYSE Arca,29:1,etf,1
+XLY,XLY,Consumer Discretionary SPDR,NYSE Arca,43:1,etf,1
+XME,XME,SPDR Metals & Mining,NYSE ARCA,30:1,etf,1
+XOM,XOM,Exxon Mobil,NYSE,10:1,accion,1
+XP,XP,XP Inc,NASDAQ,4:1,accion,1
+XPEV,XPEV,XPeng,New York,4:1,accion,1
+XRX,XROX,Xerox,NYSE,1:1,accion,1
+XYZ,XYZ,Block,NYSE,20:1,accion,1
+YELP,YELP,Yelp,NYSE,2:1,accion,1
+ZM,ZM,Zoom,NASDAQ,47:1,accion,1
+GEV,GEV,GE Vernova,NYSE,180:1,accion,1
+TLN,TLN,Talen Energy,NASDAQ,63:1,accion,1
+MS,MS,Morgan Stanley,NYSE,41:1,accion,1
+KLAC,KLAC,KLA Corporation,NASDAQ,34:1,accion,1
+SKHY,SKHY,SK Hynix,NASDAQ,25:1,accion,1
+DELL,DELL,Dell Technologies,NYSE,74:1,accion,1
+WDC,WDC,Western Digital,NASDAQ,92:1,accion,1
+IBKR,IBKR,Interactive Brokers,NASDAQ,17:1,accion,1
+WELL,WELL,Welltower,NYSE,48:1,accion,1
+PLD,PLD,Prologis,NYSE,29:1,accion,1
+LIN,LIN,Linde,NASDAQ,102:1,accion,1
+SHW,SHW,Sherwin-Williams,NYSE,69:1,accion,1
+NTRA,NTRA,Natera,NASDAQ,51:1,accion,1

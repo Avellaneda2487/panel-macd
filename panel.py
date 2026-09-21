@@ -14,9 +14,11 @@ nunca por acá.
 
 from __future__ import annotations
 
+import csv
 import json
 import sys
 import warnings
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -32,11 +34,12 @@ from macd_alertas import (
 
 # ------------------------------------------------------------------ parametros
 
-# Top CEDEARs, solo acciones. Los ETF quedan fuera: no tienen balance.
-UNIVERSO = [
-    "AAPL", "MSFT", "NVDA", "AMZN", "GOOGL",
-    "META", "TSLA", "MELI", "KO", "JPM", "XOM",
-]
+AQUI = Path(__file__).resolve().parent
+
+# Universo: la nomina de CEDEARs del escaner, solo acciones. Los ETF quedan
+# fuera. El archivo es una copia de escaner/datos/universo_cedears.csv.
+ARCHIVO_UNIVERSO = AQUI / "universo_cedears.csv"
+HILOS = 8                   # descargas en paralelo
 
 RUEDAS_SERIE = 120          # ruedas que viajan al navegador
 VELAS_MINIMAS = 60          # por debajo de esto la EMA no se asento
@@ -44,7 +47,7 @@ VELAS_MINIMAS = 60          # por debajo de esto la EMA no se asento
 # Entrada clara: entre la ultima Salida y el cruce al alza, el MACD tuvo que
 # tocar un fondo de este porcentaje del precio o mas abajo. El MACD se mide
 # en dolares; pasarlo a porcentaje hace comparable el umbral entre papeles.
-UMBRAL_FONDO = -3.0
+UMBRAL_FONDO = -1.3
 
 # Ruedas iniciales que no se leen: las EMAs arrancan en el mismo valor y el
 # primer cambio de signo del histograma es un artefacto del calculo.
@@ -52,7 +55,6 @@ CALENTAMIENTO = 100
 
 NY = ZoneInfo("America/New_York")
 CIERRE_NY = (16, 0)
-AQUI = Path(__file__).resolve().parent
 PLANTILLA = AQUI / "plantilla.html"
 SALIDA = AQUI / "docs" / "index.html"
 
@@ -188,25 +190,42 @@ def balance_de(ticker: str) -> str | None:
         return None
 
 
-def construir(universo: list[str] = UNIVERSO, ahora: datetime | None = None) -> dict:
+def cargar_universo(ruta: Path = ARCHIVO_UNIVERSO) -> list[str]:
+    """Tickers de tipo accion, en el orden del archivo."""
+    with open(ruta, encoding="utf-8", newline="") as f:
+        filas = csv.DictReader(f)
+        return [
+            r["ticker"].strip().upper()
+            for r in filas
+            if (r.get("tipo") or "").strip().lower() == "accion"
+        ]
+
+
+def _leer_uno(t: str, ahora: datetime) -> tuple[str, dict | None]:
+    try:
+        velas = descargar(t, periodo=PERIODO_DESCARGA)
+    except Exception as e:
+        print(f"[{t}] descarga fallida: {type(e).__name__}: {e}")
+        return t, None
+    if velas.empty or "Close" not in velas:
+        print(f"[{t}] sin datos")
+        return t, None
+    return t, lectura_de(t, velas["Close"], balance_de(t), ahora=ahora)
+
+
+def construir(universo: list[str] | None = None, ahora: datetime | None = None) -> dict:
+    universo = universo if universo is not None else cargar_universo()
     ahora = ahora or datetime.now(NY)
-    datos: dict[str, dict] = {}
-    for t in universo:
-        try:
-            velas = descargar(t, periodo=PERIODO_DESCARGA)
-        except Exception as e:
-            print(f"[{t}] descarga fallida: {type(e).__name__}: {e}")
-            continue
-        if velas.empty or "Close" not in velas:
-            print(f"[{t}] sin datos")
-            continue
-        lec = lectura_de(t, velas["Close"], balance_de(t), ahora=ahora)
-        if lec:
-            datos[t] = lec
-            c = lec["cruce"]
-            ultimo = f"{c['tipo']} el {c['fecha']}" if c else "sin cruces validos"
-            marca = " (en curso)" if lec["provisoria"] else ""
-            print(f"{t:6} {lec['fecha']}{marca}  {lec['estado']:8} {ultimo}")
+    with ThreadPoolExecutor(max_workers=HILOS) as pool:
+        resultados = dict(pool.map(lambda t: _leer_uno(t, ahora), universo))
+
+    # Se conserva el orden del universo: el resultado no depende de que hilo termino antes.
+    datos = {t: resultados[t] for t in universo if resultados.get(t)}
+
+    entradas = sorted(t for t, d in datos.items() if d["cruce"] and d["cruce"]["tipo"] == "entrada")
+    en_curso = sum(1 for d in datos.values() if d["provisoria"])
+    print(f"{len(datos)} de {len(universo)} papeles leidos, {en_curso} con la rueda en curso")
+    print(f"ultima senal Entrada ({len(entradas)}): {' '.join(entradas) or '-'}")
     return datos
 
 

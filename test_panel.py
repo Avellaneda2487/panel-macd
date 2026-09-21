@@ -240,3 +240,32 @@ def test_render_pone_la_marca_de_actualizacion(tmp_path):
     p = plantilla(tmp_path, "<script>const DATOS = __DATOS__;</script><i>__ACTUALIZADO__</i>")
     html = panel.render({}, p, actualizado="21/09/2026 11:04")
     assert "21/09/2026 11:04" in html and "__ACTUALIZADO__" not in html
+
+
+# ------------------------------------------------------------------ universo
+
+
+def test_el_universo_toma_solo_acciones(tmp_path):
+    csv = tmp_path / "u.csv"
+    csv.write_text(
+        "ticker,byma,nombre,mercado,ratio,tipo,rankea\n"
+        "AAPL,AAPL,Apple,NASDAQ,20:1,accion,1\n"
+        "SPY,SPY,SPDR S&P 500,NYSE Arca,60:1,etf,1\n"
+        "BRK-B,BRKB,Berkshire,NYSE,22:1,accion,1\n"
+        "SH,SH,Short,NYSE,8:1,etf,0\n",
+        encoding="utf-8",
+    )
+    assert panel.cargar_universo(csv) == ["AAPL", "BRK-B"]
+
+
+def test_el_universo_ignora_espacios_y_mayusculas(tmp_path):
+    csv = tmp_path / "u.csv"
+    csv.write_text("ticker,tipo\n aapl , Accion \nQQQ,ETF\n", encoding="utf-8")
+    assert panel.cargar_universo(csv) == ["AAPL"]
+
+
+def test_el_universo_real_no_trae_etf():
+    u = panel.cargar_universo()
+    assert "SPY" not in u and "QQQ" not in u
+    assert {"BABA", "LLY", "SATL", "TSLA"} <= set(u)
+    assert len(u) == len(set(u)), "sin duplicados"

@@ -2,9 +2,10 @@ name: Panel MACD
 
 on:
   schedule:
-    # 22:30 UTC de lunes a viernes: 19:30 en Buenos Aires, con el cierre de
-    # Nueva York ya asentado tanto en horario de verano como de invierno.
-    - cron: "30 22 * * 1-5"
+    # 14:00 UTC todos los dias: 11:00 en Buenos Aires (Argentina no cambia
+    # de hora). Entre marzo y noviembre Nueva York ya abrio a esa hora: la
+    # rueda del dia entra en curso y sus cruces se marcan provisorios.
+    - cron: "0 14 * * *"
   workflow_dispatch:
 
 permissions:
@@ -48,3 +49,26 @@ jobs:
     steps:
       - id: deploy
         uses: actions/deploy-pages@v4
+
+  # GitHub apaga los horarios de un repo publico despues de 60 dias sin
+  # actividad. Este paso deja un commit como maximo una vez cada 30 dias.
+  mantener:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Marcar actividad una vez por mes
+        run: |
+          f=.github/actividad.txt
+          if [ -f "$f" ] && [ $(( $(date +%s) - $(date -d "$(cat "$f")" +%s) )) -lt 2592000 ]; then
+            echo "ultima marca $(cat "$f"): todavia no hace falta"
+            exit 0
+          fi
+          date -u +%Y-%m-%d > "$f"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$f"
+          git commit -m "Marca de actividad del panel"
+          git push

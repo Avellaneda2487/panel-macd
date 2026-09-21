@@ -2,10 +2,12 @@ name: Panel MACD
 
 on:
   schedule:
-    # 14:00 UTC todos los dias: 11:00 en Buenos Aires (Argentina no cambia
-    # de hora). Entre marzo y noviembre Nueva York ya abrio a esa hora: la
-    # rueda del dia entra en curso y sus cruces se marcan provisorios.
-    - cron: "0 14 * * *"
+    # 14:07 UTC todos los dias: 11:07 en Buenos Aires (Argentina no cambia
+    # de hora). El minuto 7 esquiva el pico de carga de GitHub en la hora
+    # en punto, cuando los horarios se demoran o se pierden. Entre marzo y
+    # noviembre Nueva York ya abrio a esa hora: la rueda del dia entra en
+    # curso y sus cruces se marcan provisorios.
+    - cron: "7 14 * * *"
   workflow_dispatch:
 
 permissions:

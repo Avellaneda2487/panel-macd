@@ -154,7 +154,8 @@ def ondas(n=260):
 def test_lectura_arma_las_claves_que_espera_la_plantilla():
     d = panel.lectura_de("XXX", ondas(), balance="2026-10-01")
     assert set(d) == {
-        "cierre", "fecha", "estado", "provisoria", "cruce", "entrada", "balance", "serie",
+        "cierre", "fecha", "estado", "provisoria", "cruce", "entrada", "mm",
+        "balance", "serie",
     }
     assert set(d["serie"][0]) == {"f", "c", "h", "m", "s"}
 
@@ -269,3 +270,82 @@ def test_el_universo_real_no_trae_etf():
     assert "SPY" not in u and "QQQ" not in u
     assert {"BABA", "LLY", "SATL", "TSLA"} <= set(u)
     assert len(u) == len(set(u)), "sin duplicados"
+
+
+# ------------------------------------------------------------- cruce de medias
+
+
+def rampa(plano, subida, paso=1.0, base=100.0):
+    """Tramo plano y despues una rampa. Fuerza un cruce de medias conocido."""
+    return serie([base] * plano + [base + paso * (i + 1) for i in range(subida)])
+
+
+def test_mm_estado_alcista_cuando_la_rapida_queda_arriba():
+    assert panel.cruce_medias(rampa(40, 20))["estado"] == "alcista"
+
+
+def test_mm_estado_bajista_cuando_la_rapida_queda_abajo():
+    assert panel.cruce_medias(rampa(40, 20, paso=-1.0))["estado"] == "bajista"
+
+
+def test_mm_trae_la_fecha_del_ultimo_cruce():
+    c = rampa(40, 20)
+    mm = panel.cruce_medias(c)
+    rapida = c.rolling(5).mean()
+    lenta = c.rolling(21).mean()
+    dif = (rapida - lenta).dropna()
+    esperada = str(dif.index[(dif > 0).ne((dif > 0).shift(1)).fillna(False)][-1].date())
+    assert mm["fecha"] == esperada
+
+
+def test_mm_sin_cruce_en_la_historia_no_trae_fecha():
+    mm = panel.cruce_medias(serie([100.0] * 60))
+    assert mm is not None and mm["fecha"] is None
+
+
+def test_mm_con_pocas_ruedas_devuelve_none():
+    assert panel.cruce_medias(serie([100.0] * 15)) is None
+
+
+def test_los_periodos_de_las_medias_importan():
+    # Verificacion por mutacion: MM3 y MM5 no pueden dar lo mismo.
+    c = ondas(120)
+    assert panel.cruce_medias(c, rapida=3)["fecha"] != panel.cruce_medias(c, rapida=5)["fecha"]
+
+
+# ------------------------------------------------- la confirmacion en la lectura
+
+
+def test_la_lectura_trae_el_bloque_mm():
+    d = panel.lectura_de("XXX", ondas(), None)
+    assert set(d["mm"]) == {"estado", "fecha", "ruedas", "provisorio"}
+
+
+def test_mm_ruedas_mide_la_distancia_al_cruce_macd():
+    d = panel.lectura_de("XXX", ondas(), None)
+    s = [p["f"] for p in d["serie"]]
+    assert d["mm"]["ruedas"] == s.index(d["mm"]["fecha"]) - s.index(d["cruce"]["fecha"])
+
+
+def test_mm_ruedas_es_none_sin_cruce_macd():
+    d = panel.lectura_de("XXX", serie([100.0] * 200), None)
+    assert d["cruce"] is None and d["mm"]["ruedas"] is None
+
+
+def test_un_cruce_de_medias_en_la_rueda_en_curso_se_marca_provisorio():
+    c = rampa(60, 20)
+    mm = panel.cruce_medias(c)
+    recorte = c.loc[: pd.Timestamp(mm["fecha"])]
+    ahora = datetime.combine(
+        pd.Timestamp(mm["fecha"]).date(), datetime.min.time()
+    ).replace(hour=10, tzinfo=NY)
+    assert panel.lectura_de("XXX", recorte, None, ahora=ahora)["mm"]["provisorio"] is True
+    assert panel.lectura_de("XXX", recorte, None)["mm"]["provisorio"] is False
+
+
+def test_el_mm_no_agrega_ni_saca_cruces_macd():
+    """La senal la sigue disparando el MACD: el MM viaja al lado, sin decidir."""
+    c = ondas()
+    d = panel.lectura_de("XXX", c, None)
+    esperados = panel.cruces_de(panel.calcular_macd(c), c)
+    assert d["cruce"] == {**esperados[-1], "provisorio": False}

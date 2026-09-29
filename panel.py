@@ -53,6 +53,11 @@ UMBRAL_FONDO = -1.3
 # primer cambio de signo del histograma es un artefacto del calculo.
 CALENTAMIENTO = 100
 
+# Medias moviles de confirmacion. Viajan al lado de cada lectura y no
+# disparan losas: la senal la sigue dando el MACD.
+MEDIA_RAPIDA = 5
+MEDIA_LENTA = 21
+
 NY = ZoneInfo("America/New_York")
 CIERRE_NY = (16, 0)
 PLANTILLA = AQUI / "plantilla.html"
@@ -107,6 +112,35 @@ def cruces_de(
     return salida
 
 
+def cruce_medias(
+    cierres: pd.Series,
+    rapida: int = MEDIA_RAPIDA,
+    lenta: int = MEDIA_LENTA,
+) -> dict | None:
+    """Estado de la media rapida contra la lenta, y fecha de su ultimo cruce.
+
+    `estado` es alcista mientras la rapida va por encima de la lenta.
+    `fecha` es None cuando las medias no se cruzaron en la historia leida.
+    Devuelve None si no hay ruedas suficientes para la media lenta.
+    """
+    if len(cierres) < lenta + 1:
+        return None
+
+    dif = (cierres.rolling(rapida).mean() - cierres.rolling(lenta).mean()).dropna()
+    if dif.empty:
+        return None
+
+    arriba = dif > 0
+    cambio = arriba.ne(arriba.shift(1))
+    cambio.iloc[0] = False  # la primera rueda comparable no tiene con que compararse
+
+    fechas = dif.index[cambio]
+    return {
+        "estado": "alcista" if bool(arriba.iloc[-1]) else "bajista",
+        "fecha": str(fechas[-1].date()) if len(fechas) else None,
+    }
+
+
 def rueda_en_curso(fecha: pd.Timestamp, ahora: datetime) -> bool:
     """La vela es de hoy y Nueva York todavia no cerro."""
     ahora_ny = ahora.astimezone(NY)
@@ -144,6 +178,15 @@ def lectura_de(
             return None
         return {**c, "provisorio": provisoria and c["fecha"] == ultima}
 
+    # Confirmacion por medias. `ruedas` mide la distancia al cruce del MACD:
+    # negativo cuando las medias se adelantaron, positivo cuando llegaron despues.
+    medias = cruce_medias(cierres) or {"estado": None, "fecha": None}
+    ultimo_cruce = todos[-1] if todos else None
+    distancia = None
+    if medias["fecha"] and ultimo_cruce:
+        posicion = {str(f.date()): i for i, f in enumerate(cierres.index)}
+        distancia = posicion[medias["fecha"]] - posicion[ultimo_cruce["fecha"]]
+
     corte = slice(-RUEDAS_SERIE, None)
     serie = [
         {
@@ -167,8 +210,13 @@ def lectura_de(
         "fecha": ultima,
         "estado": "alcista" if float(tabla["hist"].iloc[-1]) > 0 else "bajista",
         "provisoria": provisoria,
-        "cruce": marcar(todos[-1] if todos else None),
+        "cruce": marcar(ultimo_cruce),
         "entrada": marcar(entradas[-1] if entradas else None),
+        "mm": {
+            **medias,
+            "ruedas": distancia,
+            "provisorio": provisoria and medias["fecha"] == ultima,
+        },
         "balance": balance,
         "serie": serie,
     }
